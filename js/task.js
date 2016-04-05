@@ -62,18 +62,18 @@ function chartSettings(ps){
     switch(ps.nowGraTime){
         case "day":
             svgMarginWidth=30;
-            svgMarginHeight=30;
-            barMargin=2;
+            svgMarginHeight=50;
+            barMargin=10;
             break;
         case "week":
             svgMarginWidth=30;
-            svgMarginHeight=30;
+            svgMarginHeight=50;
             barMargin=20;
             break;
         case "month":
             svgMarginWidth=30;
-            svgMarginHeight=30;
-            barMargin=100;
+            svgMarginHeight=50;
+            barMargin=60;
             break;
     }
     totalBars=Object.keys(chartData[citys[ps.nowSelectCity+1]][ps.nowGraTime]).length;
@@ -100,9 +100,9 @@ function drawRectangle(x,y,wd,ht,fill,tiptext){
     var tip = document.createElementNS('http://www.w3.org/2000/svg', 'text');
     tip.setAttributeNS(null,"x",x);
     tip.setAttributeNS(null,"y",y);
-    tip.setAttributeNS(null,"font-size","12px");
-    tip.setAttributeNS(null,"fill","red");
-    tip.setAttributeNS(null,"style","visibility:hidden")
+    tip.setAttributeNS(null,"font-size","13px");
+    tip.setAttributeNS(null,"fill","black");
+    tip.setAttributeNS(null,"style","visibility:hidden");
     var tspan1=document.createElementNS('http://www.w3.org/2000/svg', 'tspan');
     var tspan2=document.createElementNS('http://www.w3.org/2000/svg', 'tspan');
     var textNode1 = document.createTextNode(tiptext.split(":")[0],true);
@@ -110,14 +110,14 @@ function drawRectangle(x,y,wd,ht,fill,tiptext){
     tspan1.appendChild(textNode1);
     tspan2.appendChild(textNode2);
     tspan1.setAttributeNS(null,"x",x);
-    tspan1.setAttributeNS(null,"y",y-12);
+    tspan1.setAttributeNS(null,"y",y-20);
     tspan2.setAttributeNS(null,"x",x);
-    tspan2.setAttributeNS(null,"y",y);
+    tspan2.setAttributeNS(null,"y",y-2);
     tip.appendChild(tspan1);
     tip.appendChild(tspan2);
     rect.appendChild(animate);
-    g.appendChild(tip);
     g.appendChild(rect);
+    g.appendChild(tip);
     svg.appendChild(g);
 }
 function drawChart(ps){
@@ -128,7 +128,7 @@ function drawChart(ps){
         bcY=chartHeight-bcHt+svgMarginHeight;
         var date=item.indexOf("-")===-1?(ps.nowGraTime=="week"?"2016年第"+item+"周":"2016年"+item+"月"):item;
         var fill=colors[index%6];
-        drawRectangle(bcX,bcY,barWidth,bcHt,fill,date+":"+chartData[citys[ps.nowSelectCity+1]][ps.nowGraTime][item]);
+        drawRectangle(bcX,bcY,barWidth,bcHt,fill,date+":"+"AQI--"+chartData[citys[ps.nowSelectCity+1]][ps.nowGraTime][item]);
     }
 }
 
@@ -137,7 +137,7 @@ function drawChart(ps){
  */
 function renderChart() {
     var chart=document.querySelector(".aqi-chart-wrap");
-    chart.innerHTML="<svg height='600' width='1000'></svg>";
+    chart.innerHTML="<?xml version='1.0' encoding='UTF-8'?><?xml-stylesheet href='style.css' type='text/css'?><svg height='600' width='1240'></svg>";
     svg=document.getElementsByTagName("svg")[0];
     chartSettings(pageState);
     drawChart(pageState);
@@ -185,11 +185,11 @@ function initGraTimeForm() {
     var chart=document.querySelector(".aqi-chart-wrap");
     addEvent("mouseover",chart,function(e){
         var target = e.target || e.srcElement;
-        if(target.nodeName.toLowerCase()=="rect"){target.previousSibling.setAttributeNS(null, "style","visibility:visible");}
+        if(target.nodeName.toLowerCase()=="rect"){target.nextSibling.setAttributeNS(null, "style","visibility:visible");}
     });
     addEvent("mouseout",chart,function(e){
         var target = e.target || e.srcElement;
-        if(target.nodeName.toLowerCase()=="rect"){target.previousSibling.setAttributeNS(null, "style","visibility:hidden");}
+        if(target.nodeName.toLowerCase()=="rect"){target.nextSibling.setAttributeNS(null, "style","visibility:hidden");}
     });
 }
 
