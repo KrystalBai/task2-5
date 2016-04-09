@@ -91,6 +91,7 @@ function drawRectangle(x,y,wd,ht,fill,tiptext){
     rect.setAttributeNS(null,"width",wd);
     rect.setAttributeNS(null,"height",ht);
     rect.setAttributeNS(null,"fill",fill);
+    rect.setAttributeNS(null,"fill-opacity",".6");
     var animate=document.createElementNS("http://www.w3.org/2000/svg", "animate");
     animate.setAttributeNS(null,"attributeType","css");
     animate.setAttributeNS(null,"attributeName","y");
